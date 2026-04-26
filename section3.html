@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>03 - Our Story</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Cormorant+Garamond:wght@300;400;500;600&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: #0a0a0a;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        .content {
+            position: relative;
+            z-index: 10;
+        }
+
+        .section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 80px 20px;
+            position: relative;
+        }
+
+        .playfair {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .cormorant {
+            font-family: 'Cormorant Garamond', serif;
+        }
+
+        .gold-gradient {
+            background: linear-gradient(135deg, #d4af37, #f4e4bc, #d4af37);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #d4af37, #b8960c);
+            color: #0a0a0a;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: 0.1em;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 15px 40px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: 0.1em;
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .section-number {
+            position: absolute;
+            top: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.9rem;
+            letter-spacing: 0.3em;
+            color: rgba(212, 175, 55, 0.5);
+            text-transform: uppercase;
+        }
+
+        #story {
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.5) 100%),
+                        url('webbing3.jpeg') center/cover no-repeat;
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-left: 30px;
+            border-left: 2px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -6px;
+            top: 0;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #d4af37;
+        }
+
+        .nav-buttons {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            z-index: 100;
+        }
+    </style>
+</head>
+<body>
+    <!-- 3D Canvas -->
+    <div id="canvas-container"></div>
+
+    <!-- Navigation Buttons -->
+    <div class="nav-buttons">
+        <button class="btn-secondary" onclick="location.href='section2.html'">← Back</button>
+        <button class="btn-primary" onclick="location.href='section4.html'">Next →</button>
+    </div>
+
+    <!-- Content -->
+    <div class="content">
+        <!-- Love Story Section -->
+        <section class="section" id="story">
+            <div class="section-number">Our Story</div>
+            <div class="max-w-4xl mx-auto">
+                <div class="text-6xl mb-4 text-center">📖</div>
+                <h2 class="text-5xl md:text-7xl playfair gold-gradient mb-4 text-center">Our Love Story</h2>
+                <p class="text-center text-gray-400 cormorant text-xl mb-16">A journey of love, laughter, and forever</p>
+                
+                <div class="space-y-12">
+                    <div class="timeline-item pl-8 glass rounded-xl p-6 hover:bg-white/10 transition-colors">
+                        <div class="text-3xl mb-2">☕</div>
+                        <h3 class="text-2xl playfair gold-gradient mb-2">First Meeting</h3>
+                        <p class="text-gray-400 mb-2">June 15, 2020</p>
+                        <p class="text-gray-300 cormorant text-lg">Our eyes met across a crowded coffee shop, and everything changed. What started as a simple hello became the beginning of our forever.</p>
+                    </div>
+                    
+                    <div class="timeline-item pl-8 glass rounded-xl p-6 hover:bg-white/10 transition-colors">
+                        <div class="text-3xl mb-2">🌅</div>
+                        <h3 class="text-2xl playfair gold-gradient mb-2">First Date</h3>
+                        <p class="text-gray-400 mb-2">July 3, 2020</p>
+                        <p class="text-gray-300 cormorant text-lg">A sunset dinner by the beach, endless conversations, and the realization that we had found something special in each other.</p>
+                    </div>
+                    
+                    <div class="timeline-item pl-8 glass rounded-xl p-6 hover:bg-white/10 transition-colors">
+                        <div class="text-3xl mb-2">💍</div>
+                        <h3 class="text-2xl playfair gold-gradient mb-2">The Proposal</h3>
+                        <p class="text-gray-400 mb-2">December 25, 2024</p>
+                        <p class="text-gray-300 cormorant text-lg">Under a starlit sky, with trembling hands and a heart full of love, Michael asked the question that would change our lives forever. She said yes!</p>
+                    </div>
+                    
+                    <div class="timeline-item pl-8 glass rounded-xl p-6 hover:bg-white/10 transition-colors">
+                        <div class="text-3xl mb-2">💒</div>
+                        <h3 class="text-2xl playfair gold-gradient mb-2">The Wedding</h3>
+                        <p class="text-gray-400 mb-2">December 25, 2025</p>
+                        <p class="text-gray-300 cormorant text-lg">And now, we invite you to celebrate the beginning of our new chapter together.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Three.js Setup
+        let scene, camera, renderer, particles;
+        let mouseX = 0, mouseY = 0;
+        let targetX = 0, targetY = 0;
+
+        function initThree() {
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.z = 50;
+
+            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            document.getElementById('canvas-container').appendChild(renderer.domElement);
+
+            const particleCount = 2000;
+            const geometry = new THREE.BufferGeometry();
+            const positions = new Float32Array(particleCount * 3);
+            const colors = new Float32Array(particleCount * 3);
+
+            for (let i = 0; i < particleCount * 3; i += 3) {
+                positions[i] = (Math.random() - 0.5) * 200;
+                positions[i + 1] = (Math.random() - 0.5) * 200;
+                positions[i + 2] = (Math.random() - 0.5) * 200;
+
+                colors[i] = 0.83 + Math.random() * 0.1;
+                colors[i + 1] = 0.69 + Math.random() * 0.1;
+                colors[i + 2] = 0.22 + Math.random() * 0.1;
+            }
+
+            geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+            const material = new THREE.PointsMaterial({
+                size: 0.5,
+                vertexColors: true,
+                transparent: true,
+                opacity: 0.8
+            });
+
+            particles = new THREE.Points(geometry, material);
+            scene.add(particles);
+
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+            scene.add(ambientLight);
+
+            animate();
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            targetX = mouseX * 0.001;
+            targetY = mouseY * 0.001;
+
+            particles.rotation.x += 0.0005;
+            particles.rotation.y += 0.0005;
+
+            particles.rotation.x += 0.05 * (targetY - particles.rotation.x);
+            particles.rotation.y += 0.05 * (targetX - particles.rotation.y);
+
+            renderer.render(scene, camera);
+        }
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX - window.innerWidth / 2;
+            mouseY = e.clientY - window.innerHeight / 2;
+        });
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        window.addEventListener('load', () => {
+            initThree();
+        });
+    </script>
+</body>
+</html>

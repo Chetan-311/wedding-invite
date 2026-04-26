@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>01 - Welcome</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Cormorant+Garamond:wght@300;400;500;600&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: #0a0a0a;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+        }
+
+        .content {
+            position: relative;
+            z-index: 10;
+        }
+
+        .section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 80px 20px;
+            position: relative;
+        }
+
+        .playfair {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .cormorant {
+            font-family: 'Cormorant Garamond', serif;
+        }
+
+        .gold-gradient {
+            background: linear-gradient(135deg, #d4af37, #f4e4bc, #d4af37);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .glass {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #d4af37, #b8960c);
+            color: #0a0a0a;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: 0.1em;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.4);
+        }
+
+        .section-number {
+            position: absolute;
+            top: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.9rem;
+            letter-spacing: 0.3em;
+            color: rgba(212, 175, 55, 0.5);
+            text-transform: uppercase;
+        }
+
+        #welcome {
+            background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.5) 100%),
+                        url('wedding1.jpeg') center/cover no-repeat;
+        }
+    </style>
+</head>
+<body>
+    <!-- 3D Canvas -->
+    <div id="canvas-container"></div>
+
+    <!-- Content -->
+    <div class="content">
+        <!-- Welcome Section -->
+        <section class="section" id="welcome">
+            <div class="section-number"> Welcome</div>
+            <div class="text-center">
+                <div class="text-8xl mb-8 opacity-0" id="welcome-icon">💕</div>
+                <h1 class="text-6xl md:text-8xl playfair gold-gradient mb-6 opacity-0" id="welcome-title">
+                    Two Hearts
+                </h1>
+                <h2 class="text-4xl md:text-6xl playfair text-white mb-8 opacity-0" id="welcome-subtitle">
+                    One Destiny
+                </h2>
+                <p class="text-xl cormorant text-gray-300 mb-12 opacity-0" id="welcome-date">
+                    December 25, 2025
+                </p>
+                <button class="btn-primary opacity-0" id="welcome-btn" onclick="location.href='section2.html'">
+                    Begin Our Story
+                </button>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Three.js Setup
+        let scene, camera, renderer, particles;
+        let mouseX = 0, mouseY = 0;
+        let targetX = 0, targetY = 0;
+
+        function initThree() {
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.z = 50;
+
+            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            document.getElementById('canvas-container').appendChild(renderer.domElement);
+
+            // Create particles
+            const particleCount = 2000;
+            const geometry = new THREE.BufferGeometry();
+            const positions = new Float32Array(particleCount * 3);
+            const colors = new Float32Array(particleCount * 3);
+
+            for (let i = 0; i < particleCount * 3; i += 3) {
+                positions[i] = (Math.random() - 0.5) * 200;
+                positions[i + 1] = (Math.random() - 0.5) * 200;
+                positions[i + 2] = (Math.random() - 0.5) * 200;
+
+                colors[i] = 0.83 + Math.random() * 0.1;
+                colors[i + 1] = 0.69 + Math.random() * 0.1;
+                colors[i + 2] = 0.22 + Math.random() * 0.1;
+            }
+
+            geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+            const material = new THREE.PointsMaterial({
+                size: 0.5,
+                vertexColors: true,
+                transparent: true,
+                opacity: 0.8
+            });
+
+            particles = new THREE.Points(geometry, material);
+            scene.add(particles);
+
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+            scene.add(ambientLight);
+
+            animate();
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            targetX = mouseX * 0.001;
+            targetY = mouseY * 0.001;
+
+            particles.rotation.x += 0.0005;
+            particles.rotation.y += 0.0005;
+
+            particles.rotation.x += 0.05 * (targetY - particles.rotation.x);
+            particles.rotation.y += 0.05 * (targetX - particles.rotation.y);
+
+            renderer.render(scene, camera);
+        }
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX - window.innerWidth / 2;
+            mouseY = e.clientY - window.innerHeight / 2;
+        });
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        window.addEventListener('load', () => {
+            initThree();
+            
+            setTimeout(() => {
+                animateWelcome();
+            }, 500);
+        });
+
+        function animateWelcome() {
+            gsap.to('#welcome-icon', { opacity: 1, scale: 1, duration: 1, delay: 0.3, from: { scale: 0 } });
+            gsap.to('#welcome-title', { opacity: 1, duration: 1.5, delay: 0.5 });
+            gsap.to('#welcome-subtitle', { opacity: 1, duration: 1.5, delay: 1 });
+            gsap.to('#welcome-date', { opacity: 1, duration: 1.5, delay: 1.5 });
+            gsap.to('#welcome-btn', { opacity: 1, duration: 1.5, delay: 2 });
+        }
+    </script>
+</body>
+</html>
